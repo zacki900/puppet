@@ -23,7 +23,8 @@ _CPU=$(top -b -n1 | head -17 | tail -10)
 if [ "$USED_MEMORY_PERCENTAGE" -ge "$_critical" ]; then
 
 
-        echo "Sending top 10 proccess to $_email" | mail -s $NOW $_email
+          echo -e "please check you're email for the top 10 CPU processe"  \n $_CPU | mail -s $NOW $_email
+
         exit 2
 
 elif [ "$USED_MEMORY_PERCENTAGE" -ge "$_warning" ] ; then
