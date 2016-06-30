@@ -1,0 +1,81 @@
+$pack = ['vim-enhanced','git','curl','wget','ntp']
+$raw = ['wget https://raw.githubusercontent.com/zacki900/puppet/master/memory_check']
+class installpackage {
+package { $pack :
+    provider => yum,
+    ensure   => installed,
+        }
+}
+
+
+class adduser {
+  user { 'monitor' :
+        name => 'monitor',
+        ensure => present,
+        shell => '/bin/bash',
+        password => '*',
+        home => '/home/monitor',
+        system => true,
+        managehome => true,
+}
+}
+
+class filedir {
+file { '/home/monitor/scripts':
+    ensure => 'directory',
+    owner  => 'monitor',
+  }
+}
+
+class filedirsrc {
+file { '/home/monitor/src':
+    ensure => 'directory',
+    owner  => 'monitor',
+  }
+}
+class getscript {
+exec {  $raw:
+        cwd => '/home/monitor/scripts',
+        creates => '/home/monitor/scripts/memory_check',
+        path => ['/usr/bin/'],
+}
+}
+
+class link {
+file { '/home/monitor/src/my_memory_check':
+    ensure => 'link',
+    target => '/home/monitor/scripts/memory_check',
+  }
+}
+
+class cronjob {
+cron {'cron':
+        command => "sh /home/monitor/src/my_memory_check -w 10 -c 15 -e ejvdeguzman@chikka.com",
+        minute => '10',
+        hour => '*',
+        month => '*',
+        weekday  => '*',
+        monthday => '*',
+}
+}
+
+class ntpd {
+service { 'ntpd':
+                  ensure => 'running',
+                  enable => 'true',
+
+        }
+
+}
+
+node 'bpx.server.local' {
+include 'installpackage'
+include 'adduser'
+include 'filedir'
+include 'filedirsrc'
+include 'getscript'
+include 'link'
+include 'cronjob'
+include 'ntpd'
+}
+
