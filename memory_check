@@ -18,7 +18,7 @@ __checkMemory() {
 TOTAL_MEMORY=$(free | grep Mem: | awk '{print $2}')
 USED_MEMORY=$(free | grep Mem: | awk '{print $3}')
 USED_MEMORY_PERCENTAGE=$((($USED_MEMORY*100)/$TOTAL_MEMORY))
-NOW=$(date +"%Y%m%d %H:%M:%S")
+NOW=$(date +"%Y%m%d-%H:%M:%S")
 _CPU=$(top -b -n1 | head -17 | tail -10)
 if [ "$USED_MEMORY_PERCENTAGE" -ge "$_critical" ]; then
 
