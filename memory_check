@@ -8,7 +8,7 @@ __usage() {
    fi
 
     echo "Usage: ${_scriptName} -w [warning percentage] -c [critical percentage] -e [email]"
-    echo "Example: ${_scriptName} -w 70 -c 90 -e ejvdeguzman@chikka.com"
+    echo "Example: ${_scriptName} -w 70 -c 90 -e exampla@gmail.com"
 
    exit
 
